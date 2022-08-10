@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  go:
+    build:
+      dockerfile: dev.Dockerfile
+    tty: true
+    restart: unless-stopped
+    working_dir: /app
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    user: ${USER:-0:0}
+    ports:
+      - 9000:9000
+    environment:
+      HOME: /tmp
+    volumes:
+      - .:/app
+      - .wg:/etc/wireguard
+      - ${GOPATH:-~/go}:/go

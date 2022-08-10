@@ -1,0 +1,15 @@
+[Unit]
+Description=wgpm
+After=network.target
+
+[Service]
+TimeoutStartSec=0
+Type=simple
+ExecStart={{ wgpm_bin }} -H {{ host }} -p {{ port }} -d {{ device }}
+Restart=on-failure
+RestartSec=5s
+
+EnvironmentFile=-/etc/systemd/system/wgpm.service.env
+
+[Install]
+WantedBy=multi-user.target
