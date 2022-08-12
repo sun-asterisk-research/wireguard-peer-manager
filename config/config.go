@@ -1,10 +1,13 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
+)
 
 type Config struct {
 	Host            string
 	Port            int
+	PeerCIDRs       []string
 	Device          string
 	BearerTokenAuth string
 }

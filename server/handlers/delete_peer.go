@@ -22,4 +22,6 @@ func DeletePeer(w http.ResponseWriter, r *http.Request) {
 		logrus.Error(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
+	w.WriteHeader(http.StatusNoContent)
 }

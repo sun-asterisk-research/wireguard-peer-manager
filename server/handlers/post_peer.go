@@ -10,6 +10,10 @@ import (
 	"github.com/sun-asterisk-research/wireguard-peer-manager/wireguard"
 )
 
+type postPeerResponse struct {
+	AllowedIPs []string `json:"allowed_ips"`
+}
+
 func PostPeer(w http.ResponseWriter, r *http.Request) {
 	var peer types.Peer
 
@@ -18,8 +22,20 @@ func PostPeer(w http.ResponseWriter, r *http.Request) {
         return
 	}
 
-	if err := wireguard.CreateOrUpdatePeer(config.Values.Device, peer); err != nil {
+	configuredPeer, err := wireguard.CreateOrUpdatePeer(config.Values.Device, peer)
+	if err != nil {
 		logrus.Error(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	response := postPeerResponse{
+		AllowedIPs: configuredPeer.AllowedIps,
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/json")
+
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		logrus.Error(err)
 	}
 }
