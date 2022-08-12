@@ -37,6 +37,7 @@ func main() {
 	flags.StringP("device", "d", "wg0", "Device to manage peers for")
 	flags.StringP("bearer-token-auth", "a", "", "Expected bearer token for auth")
 
+	config.ReadEnvs()
 	config.ReadFlags(flags)
 
 	cmd.Execute()
